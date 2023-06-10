@@ -3,18 +3,25 @@
   "version": "1.0.0",
   "description": "study project",
   "main": "weather.js",
-  "bin" : {
-    "weather":  "weather.js"
-  }, 
+  "bin": {
+    "weather": "weather.js"
+  },
   "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["node", "cli", "weather", "study"],
+  "keywords": [
+    "node",
+    "cli",
+    "weather",
+    "study"
+  ],
   "author": "Artem Ivanov",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.4"
+    "axios": "^0.21.4",
+    "chalk": "^5.2.0",
+    "dedent-js": "^1.0.1"
   }
 }
