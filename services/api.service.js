@@ -32,8 +32,8 @@ const getWeather = async (city) => {
     const description = weatherData.data.weather[0].description
     const temp = weatherData.data.main.temp
 
-    console.log(`${name}: ${temp}C ${description}`);
-
+    const weather = `${name}: ${temp}C ${description}`
+    return weather
 }
 
 export { getWeather }

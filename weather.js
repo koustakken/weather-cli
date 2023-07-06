@@ -2,7 +2,7 @@
 
 import { getArgs } from './helpers/args.js'
 import { printError, printHelp, printSuccess } from './services/log.service.js'
-import { saveKyeValue, tokenDictionary } from './services/storage.service.js'
+import { getKeyValue, saveKyeValue, tokenDictionary } from './services/storage.service.js'
 import { getWeather } from './services/api.service.js'
 
 const saveToken = async (token) => {
@@ -18,23 +18,50 @@ const saveToken = async (token) => {
     }
 }
 
+const saveCity = async (city) => {
+    if(!city.length){
+        printError('Не передан город')
+        return
+    }
+    try {
+        await saveKyeValue(tokenDictionary.city, city)
+        printSuccess('Город сохранен')
+    } catch (e) {
+        printError(e.message)
+    }
+}
+
+const getForcast = async () => {
+    try {
+        const city = process.env.CITY ?? await getKeyValue(tokenDictionary.city)
+        const weather = await getWeather(city)
+        console.log(weather)
+    } catch (e) {
+        if (e?.response?.status == 404) {
+            printError('Неверно указан город')
+        } else if (e?.response?.status == 401) {
+            printError('Неверно указан токен')
+        } else {
+            printError(e.message)
+        }
+    }
+}
+
 const initCLI = () => {
     const args = getArgs(process.argv)
     
     if ( args.h ) {
-        // Вывод help]
-        printHelp()
+        return printHelp()
     }
 
     if ( args.s ) {
-        // Сохранить города
+        return saveCity(args.s)
     }
 
     if ( args.t ) {
         return saveToken(args.t)
     }
-    getWeather('moscow')
-    // Вывести погоду
+    return getForcast()
 }
 
 initCLI()
